@@ -1,9 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from solf.apps.core.models import Company
+from solf.apps.core import models
 
 
-@admin.register(Company)
-class CompanyAdmin(admin.ModelAdmin):
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
     pass

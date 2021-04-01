@@ -43,13 +43,14 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "drf_spectacular",
     "django_filters",
-
 ]
 
 LOCAL_APPS = [
     "solf.apps.users",
     "solf.apps.core",
-    "solf.apps.trainings",
+    "solf.apps.classes",
+    "solf.apps.business",
+    "solf.apps.common"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

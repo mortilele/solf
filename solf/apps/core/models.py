@@ -1,12 +1,18 @@
 from django.db import models
-
-# Create your models here.
 from model_utils.models import TimeStampedModel
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 
 
-class Company(TimeStampedModel):
-    name = models.CharField(max_length=200)
+class Category(MPTTModel, TimeStampedModel):
+    name = models.CharField(max_length=30, verbose_name='Name')
+    parent = TreeForeignKey('self',
+                            verbose_name='Parent Category',
+                            related_name='sub_categories',
+                            on_delete=models.DO_NOTHING,
+                            blank=True,
+                            null=True)
 
     class Meta:
-        verbose_name = 'Company'
-        verbose_name_plural = 'Companies'
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
