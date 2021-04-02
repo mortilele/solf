@@ -17,5 +17,19 @@ urlpatterns = [
         ),
         name="business-details",
     ),
+    path(
+        "fitnesses/",
+        views.FitnessViewSet.as_view({"get": "list"}),
+        name="fitness-list",
+    ),
+    path(
+        "fitnesses/<int:pk>/",
+        views.FitnessViewSet.as_view(
+            {
+                "get": "retrieve",
+            }
+        ),
+        name="fitness-details",
+    ),
 
 ]

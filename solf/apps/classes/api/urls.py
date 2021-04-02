@@ -31,5 +31,18 @@ urlpatterns = [
         ),
         name="class-schedule-details",
     ),
-
+    path(
+        "logs/",
+        views.ClassLogViewSet.as_view({"get": "list"}),
+        name="class-logs-list",
+    ),
+    path(
+        "logs/<int:pk>/",
+        views.ClassLogViewSet.as_view(
+            {
+                "get": "retrieve",
+            }
+        ),
+        name="class-logs-details",
+    ),
 ]

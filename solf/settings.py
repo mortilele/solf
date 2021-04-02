@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # APPLICATIONS
 # -----------------------------------------------------------------------------
 DJANGO_APPS = [
+    'jet',
     'django.contrib.admin',
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -141,8 +142,15 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
 }
 
-# SPECTACULAR_SETTINGS
+# SPECTACULAR SETTINGS
 # -----------------------------------------------------------------------------
 SPECTACULAR_SETTINGS = {
     "SCHEMA_PATH_PREFIX": r"/api/",
 }
+
+
+# JET SETTINGS
+# -----------------------------------------------------------------------------
+JET_DEFAULT_THEME = 'light-gray'
+
+

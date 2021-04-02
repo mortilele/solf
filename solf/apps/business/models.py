@@ -36,8 +36,7 @@ class Fitness(TimeStampedModel, LocationMixin, GeoLocationMixin, ContactsMixin):
     amenities = models.ManyToManyField(Amenity,
                                        related_name='fitnesses',
                                        verbose_name='Fitness Amenities',
-                                       blank=True,
-                                       null=True)
+                                       blank=True)
 
     class Meta:
         verbose_name = 'Fitness'

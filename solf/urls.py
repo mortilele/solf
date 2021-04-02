@@ -14,14 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path("admin/", admin.site.urls),
     path("api/business/", include("solf.apps.business.api.urls")),
     path("api/classes/", include("solf.apps.classes.api.urls")),
+    path("api/common/", include("solf.apps.common.api.urls")),
+    path("api/", include("solf.apps.core.api.urls")),
 ]
 
 if settings.DEBUG:
