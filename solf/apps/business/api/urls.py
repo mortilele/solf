@@ -9,7 +9,7 @@ urlpatterns = [
         name="business-list",
     ),
     path(
-        "companies<int:pk>/",
+        "companies/<int:pk>/",
         views.BusinessViewSet.as_view(
             {
                 "get": "retrieve",
