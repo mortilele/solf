@@ -17,7 +17,6 @@ from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
@@ -25,10 +24,14 @@ urlpatterns = [
     path("api/business/", include("solf.apps.business.api.urls")),
     path("api/classes/", include("solf.apps.classes.api.urls")),
     path("api/common/", include("solf.apps.common.api.urls")),
+    path("api/users/", include("solf.apps.users.api.urls")),
     path("api/", include("solf.apps.core.api.urls")),
 ]
 
 if settings.DEBUG:
+    from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+    from django.conf.urls.static import static
+
     urlpatterns += [
         path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
         path(
@@ -43,3 +46,4 @@ if settings.DEBUG:
         ),
     ]
 
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

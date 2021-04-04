@@ -2,11 +2,11 @@
 Solf - Online Booking System for Wellness
 
 TODO:
-- [ ] Authentication (JWT, Social Sign In)
+- [x] Authentication (JWT)
 - [ ] Authorization (Permission classes)
 - [ ] Dashboard analytics
 - [ ] Booking(Design model)
-- [ ] File/Image processing (generating thumbnails)
+- [x] File/Image serving (generating thumbnails via imagekit)
 - [x] Determine admin theme (JET)
 - [x] Implement Serializers, Endpoints
 - [ ] Implement Redis for message broker, caching
@@ -15,4 +15,10 @@ TODO:
 - [ ] Test coverage
 - [ ] Find solution of timezone problem (UTC, Asia/Almaty)
 - [x] Provide API documentation (Spectacular)
-- [ ] In-app purchase 
+- [ ] In-app purchase? 
+- [ ] Generate class diagram (django extensions)
+- [ ] User Profile?
+- [ ] Filters
+- [ ] Signals
+- [ ] Logging (logging)
+- [ ] Document README.md

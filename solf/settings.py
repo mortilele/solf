@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,8 +32,8 @@ ALLOWED_HOSTS = []
 # APPLICATIONS
 # -----------------------------------------------------------------------------
 DJANGO_APPS = [
-    'jet',
-    'django.contrib.admin',
+    "jet",
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -44,6 +45,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "drf_spectacular",
     "django_filters",
+    "django_extensions",
+    "imagekit",
 ]
 
 LOCAL_APPS = [
@@ -78,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.media',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -129,7 +133,17 @@ USE_TZ = True
 
 # STATIC
 # -----------------------------------------------------------------------------
-STATIC_URL = '/static/'
+STATIC_ROOT = "/app/var/static"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# MEDIA
+# -----------------------------------------------------------------------------
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -139,8 +153,19 @@ AUTH_USER_MODEL = 'users.User'
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+    "EXCEPTION_HANDLER": "solf.apps.common.utils.exceptions.core_exception_handler",
+    "DEFAULT_RENDERER_CLASSES": ("solf.apps.common.utils.renderers.JSONResponseRenderer",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "solf.apps.common.utils.authentication.JWTAuthentication",
+    ),
     "PAGE_SIZE": 10,
+    "NON_FIELD_ERRORS_KEY": "error",
 }
+
+# JWT
+# -----------------------------------------------------------------------------
+TOKEN_SECRET_KEY = "TOKEN_SECRET_KEY"
+
 
 # SPECTACULAR SETTINGS
 # -----------------------------------------------------------------------------
@@ -154,3 +179,18 @@ SPECTACULAR_SETTINGS = {
 JET_DEFAULT_THEME = 'light-gray'
 
 
+# LOGGING
+# -----------------------------------------------------------------------------
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}
