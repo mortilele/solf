@@ -11,7 +11,7 @@ TODO:
 - [x] Implement Serializers, Endpoints
 - [ ] Implement Redis for message broker, caching
 - [ ] Implement Celery, Flower
-- [ ] Devops (Docker, Deployment, CI/CD)
+- [ ] Devops (Docker, Docker Compose, Deployment, CI/CD)
 - [ ] Test coverage
 - [ ] Find solution of timezone problem (UTC, Asia/Almaty)
 - [x] Provide API documentation (Spectacular)
@@ -20,5 +20,5 @@ TODO:
 - [ ] User Profile?
 - [ ] Filters
 - [ ] Signals
-- [ ] Logging (logging)
+- [ ] Logging
 - [ ] Document README.md
