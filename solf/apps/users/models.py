@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from model_utils.models import TimeStampedModel
 
 
 class JWTUser(models.Model):
@@ -30,3 +31,12 @@ class JWTUser(models.Model):
 
 class User(AbstractUser, JWTUser):
     pass
+
+
+class UserPass(TimeStampedModel):
+    user = models.ForeignKey(
+        User,
+        verbose_name='User Pass',
+        on_delete=models.CASCADE,
+        related_name='passes'
+    )

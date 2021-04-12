@@ -3,7 +3,7 @@ from rest_framework import serializers
 from solf.apps.classes import models
 
 
-class ClassLogListSerializer(serializers.ModelSerializer):
+class ClassUserEntrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.ClassLog
+        model = models.ClassUserEntry
         fields = '__all__'

@@ -6,13 +6,13 @@ from model_utils.models import TimeStampedModel
 
 
 class WeekdayTimeMixin(models.Model):
-    MONDAY = 'Понедельник'
-    TUESDAY = 'Вторник'
-    WEDNESDAY = 'Среда'
-    THURSDAY = 'Четверг'
-    FRIDAY = 'Пятница'
-    SATURDAY = 'Суббота'
-    SUNDAY = 'Воскресенье'
+    MONDAY = 'Monday'
+    TUESDAY = 'Tuesday'
+    WEDNESDAY = 'Wednesday'
+    THURSDAY = 'Thursday'
+    FRIDAY = 'Friday'
+    SATURDAY = 'Saturday'
+    SUNDAY = 'Sunday'
 
     WEEK_DAYS = (
         (1, MONDAY),

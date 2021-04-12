@@ -4,8 +4,8 @@ Solf - Online Booking System for Wellness
 TODO:
 - [x] Authentication (JWT)
 - [ ] Authorization (Permission classes)
-- [ ] Dashboard analytics
-- [ ] Booking(Design model)
+- [ ] Dashboard analytics(Create Mapper for Class Logs and Schedule)
+- [x] Booking(Design model)
 - [x] File/Image serving (generating thumbnails via imagekit)
 - [x] Determine admin theme (JET)
 - [x] Implement Serializers, Endpoints
@@ -15,10 +15,15 @@ TODO:
 - [ ] Test coverage
 - [ ] Find solution of timezone problem (UTC, Asia/Almaty)
 - [x] Provide API documentation (Spectacular)
-- [ ] In-app purchase? 
-- [ ] Generate class diagram (django extensions)
-- [ ] User Profile?
+- [x] Generate UML Class Diagram (django extensions)
+- [x] User Pass model
 - [ ] Filters
 - [ ] Signals
-- [ ] Logging
+- [x] Logging
 - [ ] Document README.md
+- [ ] Transferring passed classes to logs
+
+Generate UML Class Diagram
+```shell script
+./manage.py graph_models solf.apps -g -o diagram.png  
+```

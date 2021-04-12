@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "django_extensions",
     "imagekit",
+    "djmoney"
 ]
 
 LOCAL_APPS = [
@@ -184,13 +185,81 @@ JET_DEFAULT_THEME = 'light-gray'
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
+    "filters": {
+        "filter_info_level": {
+            "()": "solf.logs.FilterLevels",
+            "filter_levels": ["INFO"],
+        },
+        "filter_error_level": {
+            "()": "solf.logs.FilterLevels",
+            "filter_levels": ["ERROR"],
+        },
+        "filter_warning_level": {
+            "()": "solf.logs.FilterLevels",
+            "filter_levels": ["WARNING"],
+        },
+        "filter_debug_level": {
+            "()": "solf.logs.FilterLevels",
+            "filter_levels": ["DEBUG"],
         },
     },
-    "root": {
-        "handlers": ["console"],
-        "level": "DEBUG",
+    "formatters": {
+        "info-formatter": {
+            "format": "\x1b[34;21m%(levelname)s | %(asctime)s | %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M",
+        },
+        "error-formatter": {
+            "format": "\x1b[31;21m%(levelname)s | %(asctime)s | {%(module)s} [%(funcName)s] | %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M",
+        },
+        "warning-formatter": {
+            "format": "\x1b[33;21m%(levelname)s | %(asctime)s | %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M",
+        },
+        "debug-formatter": {
+            "format": "\x1b[37;21m%(levelname)s | %(asctime)s | %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M",
+        },
+    },
+    "handlers": {
+        "custom_handler_info": {
+            "formatter": "info-formatter",
+            "class": "logging.StreamHandler",
+            "filters": ["filter_info_level"],
+        },
+        "custom_handler_error": {
+            "formatter": "error-formatter",
+            "class": "logging.StreamHandler",
+            "filters": ["filter_error_level"],
+        },
+        "custom_handler_warning": {
+            "formatter": "warning-formatter",
+            "class": "logging.StreamHandler",
+            "filters": ["filter_warning_level"],
+        },
+        "custom_handler_debug": {
+            "formatter": "debug-formatter",
+            "class": "logging.StreamHandler",
+            "filters": ["filter_debug_level"],
+        },
+    },
+    "loggers": {
+        "solf.apps": {
+            "handlers": [
+                "custom_handler_info",
+                "custom_handler_error",
+                "custom_handler_warning",
+                "custom_handler_debug",
+            ],
+            "level": "DEBUG",
+        },
     },
 }
+
+# Graph Models (UML Class Diagram)
+# -----------------------------------------------------------------------------
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+

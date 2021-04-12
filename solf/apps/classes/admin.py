@@ -1,5 +1,5 @@
 from django.contrib import admin
-# Register your models here.
+
 from solf.apps.classes import models
 
 
@@ -12,3 +12,12 @@ class ClassAdmin(admin.ModelAdmin):
 class ClassScheduleAdmin(admin.ModelAdmin):
     pass
 
+
+@admin.register(models.ClassLog)
+class ClassLogAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.ClassUserEntry)
+class ClasUserEntry(admin.ModelAdmin):
+    pass

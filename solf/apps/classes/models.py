@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
-
-# Create your models here.
+from django.utils.functional import cached_property
+from djmoney.models.fields import MoneyField
 from imagekit.models import ProcessedImageField, ImageSpecField
 from model_utils.models import TimeStampedModel
 
@@ -11,10 +10,56 @@ from solf.apps.common.models import WeekdayTimeMixin
 from solf.apps.common.utils import image_specs
 from solf.apps.common.utils.file_extension_validators import IMAGE_ALLOWED_EXTENSIONS
 from solf.apps.core.models import Category
+from solf.apps.users.models import UserPass
+
+"""
+================================================
+=         How is it supposed to work?          =
+================================================
+
+- Current Active classes relates to ClassSchedule
+- Passed classes will be transferred to ClassLog
+
+- Upcoming User entries relates to schedule
+- Passed to logs
+- For Dashboard analytics will be implemented mapper for schedule, logs
+"""
 
 
-class Class(TimeStampedModel):
+class ClassPriceMixin(models.Model):
+    one_entry_price = MoneyField(
+        verbose_name='One Entry Price',
+        max_digits=10,
+        decimal_places=2,
+        default_currency='KZT',
+        default=0.00
+    )
 
+    class Meta:
+        abstract = True
+
+
+class ClassEntryTypeMixin(models.Model):
+    class EntryType(models.TextChoices):
+        BOOKING = 'BOOKING', 'In app booking'
+        CALLING = 'CALLING', 'Phone call'
+
+    entry_type = models.CharField(
+        verbose_name='Entry Type',
+        choices=EntryType.choices,
+        max_length=20,
+        default=EntryType.BOOKING.value
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Class(
+    TimeStampedModel,
+    ClassEntryTypeMixin,
+    ClassPriceMixin,
+):
     def class_image_path(instance, filename):
         import uuid
         extension = filename.split(".")[-1]
@@ -65,24 +110,38 @@ class Class(TimeStampedModel):
         verbose_name_plural = 'Classes'
 
 
-class ClassSchedule(TimeStampedModel, WeekdayTimeMixin):
+class ClassMixin(models.Model):
     class_template = models.ForeignKey(
         Class,
         verbose_name='Class',
         on_delete=models.CASCADE,
-        related_name='schedule',
+        related_name='%(class)s'
     )
     max_spots = models.PositiveSmallIntegerField(
         verbose_name='Maximum available spots'
     )
 
     class Meta:
+        abstract = True
+
+
+class ClassSchedule(
+    ClassMixin,
+    TimeStampedModel,
+    WeekdayTimeMixin
+):
+    class Meta:
         verbose_name = 'Class Schedule'
         verbose_name_plural = 'Classes Schedule'
 
 
-# TODO: Придумать флоу когда текущие занятия перекидываются в логи
-class ClassScheduleLogs(TimeStampedModel):
+class ClassLog(
+    ClassMixin,
+    ClassEntryTypeMixin,
+    ClassPriceMixin,
+    TimeStampedModel,
+    WeekdayTimeMixin
+):
     schedule = models.ForeignKey(
         ClassSchedule,
         verbose_name='Schedule',
@@ -91,20 +150,42 @@ class ClassScheduleLogs(TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = 'Class Schedule Logs'
-        verbose_name_plural = 'Classes Schedule Logs'
+        verbose_name = 'Class Logs'
+        verbose_name_plural = 'Classes Logs'
 
-# TODO: Придумать каким образом будем хранить записи for upcoming classes and passed classes
-# class ClassUserEntry(TimeStampedModel):
-#     schedule = models.ForeignKey(
-#         ClassSchedule,
-#         verbose_name='Schedule',
-#         on_delete=models.DO_NOTHING,
-#         related_name='entries'
-#     )
-#     user = models.ForeignKey(
-#         User,
-#         verbose_name='User',
-#         on_delete=models.DO_NOTHING,
-#         related_name='entries'
-#     )
+
+class ClassUserEntry(TimeStampedModel):
+    schedule = models.ForeignKey(
+        ClassSchedule,
+        verbose_name='Schedule',
+        on_delete=models.DO_NOTHING,
+        related_name='entries',
+        blank=True,
+        null=True,
+        help_text='upcoming class'
+    )
+    log = models.ForeignKey(
+        ClassLog,
+        verbose_name='Log',
+        on_delete=models.DO_NOTHING,
+        related_name='entries',
+        blank=True,
+        null=True,
+        help_text='passed class'
+    )
+    user_pass = models.ForeignKey(
+        UserPass,
+        verbose_name='User Pass',
+        on_delete=models.DO_NOTHING,
+        related_name='entries'
+    )
+
+    @cached_property
+    def entry_class(self):
+        if self.schedule:
+            return self.schedule
+        return self.log
+
+    class Meta:
+        verbose_name = 'User Entry'
+        verbose_name_plural = 'User Entries'
