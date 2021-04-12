@@ -21,7 +21,8 @@ TODO:
 - [ ] Signals
 - [x] Logging
 - [ ] Document README.md
-- [ ] Transferring passed classes to logs
+- [ ] Transferring passed classes to logs (periodic task)
+- [ ] Secrets from Environment variables (environ)
 
 Generate UML Class Diagram
 ```shell script
