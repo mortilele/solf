@@ -1,6 +1,6 @@
-###Solf - Online Booking System for Wellness
+### Solf - Online Booking System for Wellness
 
-####What's the point of the projects?
+#### What's the point of the projects?
 Разработать CRM прототип mindbody. Создания занятий на неделю, возможность записаться на занятия со стороны пользователя
 В связи с ростом кол-во занятий, нужно было найти архитектурное решение по расписанию занятий.
 Идея заключается в том, что у нас есть три связи таблиц
@@ -17,7 +17,7 @@
  
 
 
-#####TODO:
+#### TODO:
 - [x] Authentication (JWT)
 - [x] Authorization (Permission classes)
 - [ ] Dashboard analytics(Create Mapper for Class Logs and Schedule)
