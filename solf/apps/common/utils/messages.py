@@ -14,3 +14,6 @@ BAD_REQUEST = _("Bad request")
 PERMISSION_DENIED = _("Permission denied")
 PAGE_NOT_FOUND = _("Page not found")
 SERVER_ERROR = _("Server error")
+
+
+ALREADY_SIGNED_UP = _("You already signed up to class")

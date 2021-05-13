@@ -6,7 +6,7 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from model_utils.models import TimeStampedModel
 
 from solf.apps.business.models import Fitness
-from solf.apps.common.models import WeekdayTimeMixin
+from solf.apps.common.models import WeekdayTimeMixin, IsActiveMixin
 from solf.apps.common.utils import image_specs
 from solf.apps.common.utils.file_extension_validators import IMAGE_ALLOWED_EXTENSIONS
 from solf.apps.core.models import Category
@@ -59,6 +59,7 @@ class Class(
     TimeStampedModel,
     ClassEntryTypeMixin,
     ClassPriceMixin,
+    IsActiveMixin
 ):
     def class_image_path(instance, filename):
         import uuid
@@ -109,6 +110,9 @@ class Class(
         verbose_name = 'Class'
         verbose_name_plural = 'Classes'
 
+    def __str__(self):
+        return f'{self.name} - {self.fitness}'
+
 
 class ClassMixin(models.Model):
     class_template = models.ForeignKey(
@@ -128,7 +132,8 @@ class ClassMixin(models.Model):
 class ClassSchedule(
     ClassMixin,
     TimeStampedModel,
-    WeekdayTimeMixin
+    WeekdayTimeMixin,
+    IsActiveMixin
 ):
     class Meta:
         verbose_name = 'Class Schedule'
@@ -142,6 +147,9 @@ class ClassLog(
     TimeStampedModel,
     WeekdayTimeMixin
 ):
+    """
+    Passed classes warehouse
+    """
     schedule = models.ForeignKey(
         ClassSchedule,
         verbose_name='Schedule',
@@ -155,6 +163,19 @@ class ClassLog(
 
 
 class ClassUserEntry(TimeStampedModel):
+    class EntryStatus(models.TextChoices):
+        WAITING = 'WAITING', 'Waiting'
+        CANCELED_BY_USER = 'CANCELED_BY_USER', 'Canceled by user'
+        CANCELED_BY_MODERATOR = 'CANCELED_BY_MODERATOR', 'Canceled by moderator'
+        MISSED = 'MISSED', 'Missed'
+        APPROVED = 'APPROVED', 'Approved successfully'
+
+    status = models.CharField(
+        verbose_name='Entry Type',
+        choices=EntryStatus.choices,
+        max_length=30,
+        default=EntryStatus.WAITING.value
+    )
     schedule = models.ForeignKey(
         ClassSchedule,
         verbose_name='Schedule',

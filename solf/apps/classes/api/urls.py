@@ -32,6 +32,15 @@ urlpatterns = [
         name="class-schedule-details",
     ),
     path(
+        "schedule/<int:pk>/sign-up/",
+        views.ClassScheduleViewSet.as_view(
+            {
+                "post": "sign_up",
+            }
+        ),
+        name="class-schedule-sign-up",
+    ),
+    path(
         "logs/",
         views.ClassLogViewSet.as_view({"get": "list"}),
         name="class-logs-list",
@@ -45,14 +54,9 @@ urlpatterns = [
         ),
         name="class-logs-details",
     ),
-    # path(
-    #     "entries/",
-    #     views.ClassEntryViewSet.as_view({"get": "list"}),
-    #     name="class-logs-list",
-    # ),
-    # path(
-    #     "entries/my",
-    #     views.ClassEntryViewSet.as_view({"get": "list"}),
-    #     name="class-logs-list",
-    # ),
+    path(
+        "entries/my",
+        views.ClassEntryViewSet.as_view({"get": "list"}),
+        name="class-logs-list",
+    ),
 ]

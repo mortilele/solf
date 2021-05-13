@@ -93,3 +93,13 @@ class City(TimeStampedModel, GeoLocationMixin):
     class Meta:
         verbose_name = 'City'
         verbose_name_plural = 'Cities'
+
+
+class IsActiveMixin(models.Model):
+    is_active = models.BooleanField(
+        verbose_name='Active?',
+        default=True
+    )
+
+    class Meta:
+        abstract = True

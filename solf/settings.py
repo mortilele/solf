@@ -47,7 +47,8 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "django_extensions",
     "imagekit",
-    "djmoney"
+    "djmoney",
+    "django_celery_beat",
 ]
 
 LOCAL_APPS = [
@@ -124,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Almaty'
 
 USE_I18N = True
 
@@ -159,6 +160,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "solf.apps.common.utils.authentication.JWTAuthentication",
     ),
+    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "NON_FIELD_ERRORS_KEY": "error",
 }
@@ -263,3 +265,20 @@ GRAPH_MODELS = {
   'group_models': True,
 }
 
+
+# CELERY
+# -----------------------------------------------------------------------------
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+
+
+# CACHE
+# -----------------------------------------------------------------------------
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
